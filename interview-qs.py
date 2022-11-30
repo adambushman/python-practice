@@ -55,22 +55,47 @@ df_1121 = pd.DataFrame({
 
 # Answer
 (df_1121
-    .loc[(df["Favorite Color"] == "blue") & (df["Grade"] > 90)]
+    .loc[(df_1121["Favorite Color"] == "blue") & (df_1121["Grade"] > 90)]
 )
 
 
 # -----------------------
-# Interview Q: 11/21/2022
-    # The dataframe is showing information about students. Write code using Python Pandas to select the rows where the students' favorite color is blue or yellow and their grade is above 90.
+# Interview Q: 11/09/2022
+    # You need to assign the following letter grades based on final_grade_pct in a new column named "final_grade_letter":
+    # >90: A, 81-90: B, 71-80: C, <70: D
+    # Write a function using Python to loop through the table and assign the appropriate letter grades to each student, adding a new column to the existing dataframe, df.
 
-df_1121 = pd.DataFrame({
-    "Age": [20, 19, 22, 21], 
-    "Favorite Color": ["blue", "blue", "yellow", "green"], 
-    "Grade": [88, 95, 92, 70], 
-    "Name": ["Willard Morris", "Al Jennings", "Omar Mullins", "Spencer McDaniel"]
+df_1109 = pd.DataFrame({
+    "student_name": ["Leon Rose", "Jamal Mosley", "Michael Malone", "Mike Brown", "Nick Nurse"], 
+    "student_id": [1904839, 3824892, 4920940, 2849284, 4824242], 
+    "class": ["Business 101", "Communication 210", "Optimization 440", "Tactics 310", "Strategy 550"], 
+    "final_grade_pct": [67, 80, 92, 88, 79]
 })
 
 # Answer
-(df_1121
-    .loc[(df["Favorite Color"] == "blue") & (df["Grade"] > 90)]
-)
+def add_letter_grades(df):
+    def letter_logic(vec):
+        l = []
+        for v in vec:
+            if(v > 90):
+                letter = "A"
+            elif(v > 80):
+                letter = "B"
+            elif(v > 70):
+                letter = "C"
+            else:
+                letter = "D"
+            
+            l.append(letter)
+        
+        return l
+
+    return (
+        df_1109
+        .assign(
+            final_grade_letter = lambda a_df: letter_logic(a_df["final_grade_pct"])
+        )
+    )
+    
+
+add_letter_grades(df_1109)
