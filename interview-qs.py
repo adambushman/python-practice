@@ -1,9 +1,11 @@
 import pandas as pd
+import numpy as np
+
 
 
 # -----------------------
 # Interview Q: 11/30/2022
-# Normalizing student grades with Pandas
+# Normalizing student grades
     # The dataframe is showing information about students. Write code using Python Pandas to select the rows where the students' favorite color is blue or yellow and their grade is above 90.
 
 df_1130 = pd.DataFrame({
@@ -25,6 +27,7 @@ def normalize(vec):
 
 # -----------------------
 # Interview Q: 11/28/2022
+# Calculating earnings
     # Suppose an individual is taxed 30% if earnings for a given week are > = $2,000. If earnings land < $2,000 for the week, the individual is taxed at a lower rate of 15%.
     # Write a function using Python to calculate both the pre-tax and post-tax earnings for a given individual, with the ability to feed in the hourly wage and the weekly hours as inputs.
 
@@ -44,6 +47,7 @@ calc_earnings(70, 40)
 
 # -----------------------
 # Interview Q: 11/21/2022
+# Filtering student info
     # The dataframe is showing information about students. Write code using Python Pandas to select the rows where the students' favorite color is blue or yellow and their grade is above 90.
 
 df_1121 = pd.DataFrame({
@@ -60,7 +64,41 @@ df_1121 = pd.DataFrame({
 
 
 # -----------------------
+# Interview Q: 11/18/2022
+# Identifying prime numbers
+    # Given a single #, n, write a function using Python to return whether or not the # is prime. Additionally, if the inputted # is prime, save it into an array, a. 
+
+# Answer
+a = []
+
+def is_prime(n):
+    if (n < 2):
+        result = False
+    elif(n == 2 | n == 3):
+        result = True
+    else:
+        i = 2
+        while i <= n:
+            if (n % i == 0):
+                result = False
+                break
+            i = i + 1
+        result = True if i == n else result
+        if result == True:
+            a.append(n)
+
+    return result
+
+is_prime(101)
+is_prime(71)
+is_prime(5)
+
+print(a)
+
+
+# -----------------------
 # Interview Q: 11/09/2022
+# Assigning grades
     # You need to assign the following letter grades based on final_grade_pct in a new column named "final_grade_letter":
     # >90: A, 81-90: B, 71-80: C, <70: D
     # Write a function using Python to loop through the table and assign the appropriate letter grades to each student, adding a new column to the existing dataframe, df.
@@ -99,3 +137,10 @@ def add_letter_grades(df):
     
 
 add_letter_grades(df_1109)
+
+
+# -----------------------
+# Interview Q: 11/18/2022
+    # You need to assign the following letter grades based on final_grade_pct in a new column named "final_grade_letter":
+    # >90: A, 81-90: B, 71-80: C, <70: D
+    # Write a function using Python to loop through the table and assign the appropriate letter grades to each student, adding a new column to the existing dataframe, df.
