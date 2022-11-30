@@ -234,6 +234,7 @@ ages = pd.Series(
 )
 
 
+# Merging/joining
 (
     pd.merge(
         wins_2021_df, 
