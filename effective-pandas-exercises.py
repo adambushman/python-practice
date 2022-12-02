@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -244,3 +243,166 @@ ages = pd.Series(
     )
     .mean(axis=1)
 )
+
+car_makes = cars["make"]
+
+# String replacement
+
+(car_makes
+    .str.replace('A', 'AA')
+)
+
+# All manufacturers with consecutive letters
+(car_makes
+    .loc[(car_makes
+        .replace(r'([a-z])\1+', '*', regex = True)
+        .str.find('*')
+        .gt(-1)
+    )]
+    .unique()
+)
+
+(car_makes
+    .loc[(car_makes
+        .str.find(' ')
+        .gt(-1)
+    )]
+    .str.cat(sep = ',')
+)
+
+(car_makes
+    .str.wrap(5)
+)
+
+
+# Earthquake dates and times
+eqs = earthquakes["Date"] + " " + earthquakes["Time"]
+eqs_upd = earthquakes["updated"]
+
+eqs.head()
+eqs_upd.head()
+
+eqs_dt = pd.to_datetime(eqs, utc = True)
+eqs_dt_upd = pd.to_datetime(eqs_upd, utc = True)
+
+eqs_dt_upd.dt.tz_convert('America/Denver')
+
+
+eqs_dt_upd.dt.strftime('%b %d, %Y')
+
+(eqs_dt_upd
+    .loc[eqs_dt_upd.dt.is_leap_year]
+)
+
+
+# Dates as index
+
+url = 'https://github.com/mattharrison/datasets/raw/master/data/alta-noaa-1980-2019.csv'
+alta_df = pd.read_csv(url)
+
+dates = pd.to_datetime(alta_df.DATE)
+
+snow = (
+    alta_df
+    .SNOW
+    .rename(dates)
+)
+
+snow.head()
+
+winter = (snow.index.quarter == 1) | (snow.index.quarter == 4)
+
+snow_clean = (snow
+    .where(~(winter & snow.isna()), snow.interpolate())
+    .where(~(~winter & snow.isna()), 0)
+)
+
+(snow_clean
+    .rolling(7)
+    .mean()
+    .dropna()
+)
+
+(snow_clean
+    .resample('AS')
+    .sum()
+    .plot(
+        x = 'index', 
+        y = 'SNOW', 
+        c = 'blue', 
+        kind = 'line', 
+        title = 'Historical Monthly Snowfall at Alta'
+    )
+)
+
+plt.show()
+
+
+(snow_clean
+    .div(snow_clean
+        .resample('QS')
+        .transform('sum')
+    )
+    .mul(100)
+    .fillna(0)
+    .sort_values(ascending = False)
+    .head(10)
+)
+
+(snow_clean
+    .loc['2017-10-01':'2018-03-31']
+    .div(snow_clean
+        .resample('YS')
+        .transform('sum')
+    )
+    .fillna(0)
+    .sort_values(ascending = False)
+    .head(10)
+)
+
+def christmas(idx):
+    year = idx.year
+    month = idx.month
+    return year.where((month == 12), year + 1)
+
+(snow_clean
+    .groupby(christmas)
+    .sum()
+    .sort_values(ascending = False)
+    .head
+)
+
+
+# Cumulative Snow Comparison
+(
+    snow_clean
+    .loc['2010-07-01':'2011-06-30']
+    .cumsum()
+    .reset_index()
+    .SNOW
+    .rename('2010')
+    .plot(
+        x = 'index', 
+        y = 'SNOW', 
+        c = 'green', 
+        kind = 'line', 
+    )
+)
+(
+    snow_clean
+    .loc['1994-07-01':'1995-06-30']
+    .cumsum()
+    .reset_index()
+    .SNOW
+    .rename('1994')
+    .plot(
+        x = 'index', 
+        y = 'SNOW', 
+        c = 'blue', 
+        kind = 'line', 
+        title = 'Cumulative Season Snow Comparison'
+    )
+)
+
+plt.legend(loc = 'upper right')
+plt.show()
