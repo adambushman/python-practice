@@ -152,16 +152,30 @@ def possibilities(score):
 
     def check(c, s):
         for i in range(0, len(vals)):
-            if s - vals[i] > 1:
+            if (s - vals[i]) > 1:
                 c.append(poss[i])
                 check(c, s - vals[i])
-            elif s - vals[i] == 0:
+            elif (s - vals[i]) == 0:
                 c.append(poss[i])
                 print(' ... '.join(r for r in c))
-                c.clear()
+                c.pop(len(c)-1)
+        
+        if len(c) != 0: c.pop(len(c)-1)
     
     check([], score)
     
 
 # Possible ways print to the console
 possibilities(8)
+
+
+# -----------------------
+# Interview Q: 10/28/2022
+    #  A Product Manager asked you to give an update 
+    #  on how the Alpha Launch is going. You decide to '
+    #  aggregate (e.g. pivot) the events by each app to provide '
+    # a quick summary. Write the aggregation using Python (Pandas).
+
+
+
+# Answer
