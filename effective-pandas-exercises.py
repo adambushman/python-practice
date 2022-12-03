@@ -406,3 +406,55 @@ def christmas(idx):
 
 plt.legend(loc = 'upper right')
 plt.show()
+
+
+earthquakes.head()
+earthquakes.columns
+
+new_earth = (
+    earthquakes
+    .assign(rDate = lambda df: pd.to_datetime(df['Date'] + ' '+ df['Time']))
+    .drop(['Unnamed: 0', 'magType', 'id', 'nst', 'net', 'type', 'updated', 'Date', 'Time'], axis = 1)
+    [['rDate', 'latitude', 'longitude', 'depth', 'mag', 'place']]
+)
+
+(new_earth
+    .set_index('rDate')
+    .resample("YS")
+    ['depth']
+    .count()
+    .drop(['2014-01-01'])
+    .rename('FREQ')
+    .plot(
+        x = 'index', 
+        y = 'FREQ', 
+        c = 'green', 
+        kind = 'line', 
+        title = 'Frequency of Earthquakes by Year'
+    )
+)
+
+plt.show()
+
+
+(new_earth
+    .set_index('rDate')
+    .resample("YS")
+    ['depth']
+    .count()
+    .drop(['2014-01-01'])
+    .rolling(5)
+    .sum()
+    .dropna()
+    .rename('FREQ')
+    .plot(
+        x = 'index', 
+        y = 'FREQ', 
+        c = 'green', 
+        kind = 'line', 
+        title = 'Rolling 5 Year Earthquake Frequency'
+    )
+)
+
+plt.show()
+
