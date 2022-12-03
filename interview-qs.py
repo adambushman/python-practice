@@ -144,65 +144,24 @@ add_letter_grades(df_1109)
     # There are a few ways we can score in American Football:
     # Given a score value, can you write a function that lists the possible ways the score could have been achieved?
 
-def score_possibilities(point_total):
-    def combos(point_total):
-        c = []
-        total = 0
-        if point_total >= 6: 
-            c.append("TD")
-            total = total - 6
-        if point_total >= 7: c.append("PA")
-        if point_total >= 8: c.append("2P")
-        if ((point_total % 3 == 0) or (np.floor(point_total / 3) > 0 and (point_total % 3 > 1))): c.append("FG")
-        if ((point_total % 2 == 0) or (np.floor(point_total / 2) > 0 and (point_total % 2 > 1))): c.append("SF")
+# Answer
 
-        return c, total
+def possibilities(score):
+    vals = [8, 7, 6, 3, 2]
+    poss = ['TD+2P', 'TD+PA', 'TD', 'FG', 'SF']
 
-    points = [1, 2, 3, 6]
-
-    for p in points:
-        print("Raw Division: " + str(np.floor(point_total / p)))
-        print(" -> Left Over: " + str(point_total % p))
-
-
-
-new_point_total = 15
-def possible(c, new_point_total, i):
-    deduct = -1
-    if np.floor(new_point_total / 8) > 0: # TD+2P
-        deduct = 8
-        c = c + "TD-" + "2P-"
-    elif np.floor(new_point_total / 7) > 0: # TD+PA
-        deduct = 7
-        c = c + "TD-" + "PA-"
-    elif np.floor(new_point_total / 6) > 0: # TD+MPA
-        deduct = 6
-        c = c + "TD-" + "MPA-"
-    elif np.floor(new_point_total / 3) > 0 and new_point_total % 3 > 1: # FG
-        deduct = 3
-        c = c + "FG-"
-    elif np.floor(new_point_total / 2) > 0 and new_point_total % 2 > 1: # FG
-        deduct = 6
-        c = c + "SF-"
-    else:
-        c = ""
+    def check(c, s):
+        for i in range(0, len(vals)):
+            if s - vals[i] > 1:
+                c.append(poss[i])
+                check(c, s - vals[i])
+            elif s - vals[i] == 0:
+                c.append(poss[i])
+                print(' ... '.join(r for r in c))
+                c.clear()
     
-    if new_point_total - deduct == 0:
-        return c, 0, i
-    elif deduct > -1:
-        possible(c, new_point_total - deduct)
-    else: 
-        return c, -1
+    check([], score)
+    
 
-
-def avenues(point_total):
-    c = ""
-    i = []
-    possible(c, point_total, i)
-
-
-
-
-
-x = "TD-PA-FG-SF"
-x.split(sep="-")
+# Possible ways print to the console
+possibilities(8)
