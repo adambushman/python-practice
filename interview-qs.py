@@ -224,3 +224,32 @@ def print_num(n):
             print(str(r))
 
 print_num(15)
+
+
+# -----------------------
+# Interview Q: 10/19/2022
+    #  You're given a set of data that is aggregated on a monthly basis (as illustrated in Table A).
+    #  Can you write code that can expand this monthly table into a daily table which spreads revenue across the 30 day period (as shown in Table B)? 
+
+data_1019 = pd.DataFrame({
+    "Month": [1, 2, 3], 
+    "Revenue": [300, 330, 390]
+})
+
+# Answer
+
+(
+    pd.DataFrame({
+        "Month": np.repeat(data_1019['Month'].unique(), [30, 30, 30]).tolist()
+    })
+    .assign(Day = [*range(1, 31)] + [*range(1, 31)] + [*range(1, 31)])
+    .merge(
+        data_1019, 
+        how = 'left', 
+        on = 'Month'
+    )
+    .assign(R = lambda x: x['Revenue'] / 30)
+    .drop(['Revenue'], axis = 1)
+    .rename(columns = {'R': 'Revenue'})
+)
+
