@@ -201,3 +201,26 @@ data_1028 = pd.DataFrame({
         aggfunc = np.count_nonzero
     )
 )
+
+
+# -----------------------
+# Interview Q: 10/26/2022
+    #  Write a function that takes in an integer n, and prints out integers from 1 to n inclusive.
+    #  Additionally, if %3 == 0 then print "foo" in place of the integer, 
+    #  if %5 == 0 then print "ie" in place of the integer, 
+    #  and if both conditions are true then print "foo-ie" in place of the integer.
+
+# Answer
+
+def print_num(n):
+    for r in range(1, n+1):
+        if ((r % 3) == 0 and (r % 5) == 0):
+            print("foo-ie")
+        elif (r % 3) == 0:
+            print("foo")
+        elif (r % 5) == 0:
+            print("ie")
+        else:
+            print(str(r))
+
+print_num(15)
