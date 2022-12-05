@@ -176,6 +176,28 @@ possibilities(8)
     #  aggregate (e.g. pivot) the events by each app to provide '
     # a quick summary. Write the aggregation using Python (Pandas).
 
-
+data_1028 = pd.DataFrame({
+    "time": [1625642764, 1625640152, 1625640161, 1625640161, 1625642754, 1625642753, 1625640153, 1625599912, 1625599929, 1625642767, 1625640154, 
+        1625599917, 1625640156, 1625642763, 1614724387, 1625642764, 1614724383, 1625640150, 1625642769, 1614724388, 1614724378, 
+        1625599928, 1625640155, 1625640146, 1614724388, 1625599928, 1614724377, 1625640154, 1625599915, 1625640150], 
+    "user_id": [849839, 102912, 849839, 540394, 1019291, 540394, 428495, 428495, 540394, 647564, 
+        865849, 849839, 849839, 102912, 250938, 102912, 540394, 250938, 865849, 865849, 
+        102912, 102912, 250938, 428495, 865849, 849839, 102912, 428495, 250938, 647564], 
+    "app_id": ['PayPal', 'PayPal', 'Venmo', 'Cashapp', 'Venmo', 'PayPal', 'Venmo', 'PayPal', 'Cashapp', 'PayPal', 
+        'Venmo', 'Venmo', 'Cashapp', 'Venmo', 'Cashapp', 'Cashapp', 'Cashapp', 'Venmo', 'Cashapp', 'PayPal', 
+        'PayPal', 'Cashapp', 'Cashapp', 'PayPal', 'Venmo', 'PayPal', 'Cashapp', 'Cashapp', 'Cashapp', 'Cashapp'], 
+    "event": ['No', 'Yes', 'Yes', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'No', 
+        'No', 'No', 'Yes', 'Yes', 'No', 'Yes', 'No', 'No', 'Yes', 'Yes', 
+        'Yes', 'No', 'No', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No']
+})
 
 # Answer
+
+(data_1028
+    .pivot_table(
+        values = 'user_id', 
+        index = 'app_id', 
+        columns = 'event', 
+        aggfunc = np.count_nonzero
+    )
+)
