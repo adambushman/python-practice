@@ -253,3 +253,30 @@ data_1019 = pd.DataFrame({
     .rename(columns = {'R': 'Revenue'})
 )
 
+
+# -----------------------
+# Interview Q: 10/17/2022
+    #  Write a function to return a boolean that indicates if two strings are one edit away from being identical.
+    #  The definition of an "edit" is as follows: Insert one character, Remove one character, Replace one character
+
+# Answer
+
+def oneEditAway(str1, str2):
+    if(str1 == str2):
+        return True
+    else:
+        str1 = list(list(zip(*str1))[0])
+        str2 = list(list(zip(*str2))[0])
+
+        c = []
+        for i in range(0, min(len(str1), len(str2))):
+            c.append(1 if str1[i] == str2[i] else 0)
+
+        t = len(c) - sum(c) + (1 if len(str1) != len(str2) else 0)
+        return t == 1
+
+
+oneEditAway("pea", "pea")
+oneEditAway("pea", "lea")
+oneEditAway("pea", "seas")
+
