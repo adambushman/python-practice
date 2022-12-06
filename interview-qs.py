@@ -280,3 +280,59 @@ oneEditAway("pea", "pea")
 oneEditAway("pea", "lea")
 oneEditAway("pea", "seas")
 
+
+# -----------------------
+# Interview Q: 10/10/2022
+    #  Can you pull the average, median, minimum, maximum, and standard deviations for salary across 5 year experience buckets at Company XYZ?
+
+df_1010 = pd.DataFrame({
+    "employee_name": ([
+        'Esther Dixon', 'Molly Bird', 'Gabriel Fowler', 'Cruz Ellis', 'Ollie Santiago', 'Judy Vaughan', 'Sebastian Andrade', 'Mohamed Howard', 'Riya Kane', 'Joan Henry', 
+        'Kamil Hogan', 'Willard Mayer', 'Grayson Bradley', 'Davina Schaefer', 'Alexia Gallegos', 'Teresa Simpson', 'Allen Davis', 'Idris Blanchard', 'Owain Lowery', 'Esha Love', 
+        'Zara Lawrence', 'Sebastien Rowland', 'Moshe Delacruz', 'Abdul Rush', 'Kelly Norman', 'Terry Lewis', 'Otto Jennings', 'Macy Moyer', 'Sumaiya Cooke', 'Omari Gill'
+    ]), 
+    "employee_id": ([
+        986719, 316904, 317045, 181254, 387226, 316961, 181042, 119970, 316782, 386879, 
+        181111, 120002, 986837, 119945, 119810, 180859, 317101, 119995, 119999, 387173, 
+        120099, 181000, 181080, 387110, 387220, 316966, 387143, 180794, 180978, 180862
+    ]), 
+    "yrs_of_experience": ([
+        4, 1, 4, 13, 3, 1, 15, 6, 2, 4, 1, 1, 13, 5, 6, 3, 1, 6, 5, 9, 3, 1, 1, 4, 3, 5, 2, 5, 2, 4
+    ]), 
+    "yrs_at_company": ([
+        2, 1, 1, 6, 1, 1, 4, 2, 2, 1, 3, 1, 1, 2, 1, 3, 3, 1, 1, 1, 2, 1, 1, 3, 1, 2, 1, 2, 1, 2
+    ]), 
+    "compensation": ([
+        95206.71, 82433.77, 72149.85, 105361.12, 97243.93, 134557.55, 124501.72, 96949.17, 71891.63, 120495.23, 
+        98712.27, 71560.75, 101382.74, 116620.68, 160333.08, 94146.18, 113638.03, 94368.48, 100548.31, 128403.32, 
+        123583.45, 99533.72, 98481.03, 94969.71, 120027.67, 144925.92, 78430.78, 106169.62, 88842.7, 95882.39
+    ]), 
+    "career_track": ([
+        'technical', 'executive', 'non-technical', 'executive', 'executive', 'technical', 'executive', 'technical', 'technical', 'executive', 
+        'non-technical', 'executive', 'non-technical', 'executive', 'executive', 'technical', 'technical', 'technical', 'non-technical', 'executive', 
+        'non-technical', 'technical', 'technical', 'technical', 'non-technical', 'executive', 'non-technical', 'executive', 'technical', 'executive'
+    ])
+})
+
+# Answer
+
+def assign_buckets(ser):
+    m = int(np.ceil(max(ser) / 5) + 1)
+
+    r = list(range(0, int(m) * 5, 5))
+
+    return pd.cut(ser, r)
+
+
+(df_1010
+    .assign(bucket = lambda x: assign_buckets(x['yrs_of_experience']))
+    .groupby('bucket')
+    .agg(
+        mean_sal = ('compensation', 'mean'), 
+        med_sal = ('compensation', 'median'), 
+        min_sal = ('compensation', 'min'), 
+        max_sal = ('compensation', 'max'), 
+        std_sal = ('compensation', 'std')
+    )
+)
+
