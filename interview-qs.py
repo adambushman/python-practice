@@ -360,6 +360,7 @@ def assign_buckets(ser):
     #  Suppose you are given P, which is list of j integer intervals, where j is the number of intervals. The intervals are in a format [a, b]. 
     #  Given an integer z, can you return the number of overlapping intervals for point z?
 
+# Answer
 
 def count_overlap(P, z):
     n = 0
@@ -372,3 +373,36 @@ ivals = [[0, 2], [3, 7], [4, 6], [7, 8], [1, 5]]
 
 count_overlap(ivals, 5)
 count_overlap(ivals, 10)
+
+
+# -----------------------
+# Interview Q: 9/30/2022
+    #  Below is a snippet from a table that contains information about employees that work at Company XYZ:
+    #  Company XYZ recently migrated database systems causing some of the date_joined records to be NULL. 
+    #  You're told by an analyst in human resources NULL records for the date_joined field indicates the employees joined prior to 2010. 
+    #  You also find out there are multiple employees with the same name and duplicate records for some employees.
+
+df_0930 = pd.DataFrame({
+    "employee_name": ['Andy', 'Beth', 'Cindy', 'Dale', 'Sebastian Andrade', 'Sebastian Andrade', 'Cruz Ellis', 'Andy', 'Sebastian Andrade', 'Judy Vaughan', 'Sebastian Andrade', 'Santiago', 'Cruz Ellis', 'Judy Vaughan', 'Sebastian Andrade', 'Judy Vaughan', 'Santiago', 'Judy Vaughan', 'Sebastian Andrade', 'Sebastian Andrade'], 
+    "employee_id": [123456, 789456, 654123, 963852, 858382, 858382, 103030, 123456, 858382, 294902, 858382, 393929, 103030, 294902, 858382, 294902, 393929, 294902, 858382, 858382], 
+    "date_joined": ['2015-02-15', np.nan, '2017-05-16', '2018-01-15', '2018-07-14', '2018-07-14', '2013-09-30', '2015-02-15', '2018-07-14', '2020-02-03', '2018-07-14', np.nan, '2013-09-30', '2020-02-03', '2018-07-14', '2020-02-03', np.nan, '2020-02-03', '2018-07-14', '2018-07-14'], 
+    "age": [45, 36, 34, 25, 52, 52, 36, 45, 52, 49, 52, 21, 36, 49, 52, 49, 21, 49, 52, 52], 
+    "yrs_of_experience": [24, 15, 14, 4, 26, 26, 14, 24, 26, 20, 26, 1, 14, 20, 26, 20, 1, 20, 26, 26]
+})
+
+df_0930.head()
+
+# Answer
+
+(df_0930
+    .drop_duplicates()
+    .assign(
+        date_joined = lambda x: x['date_joined'].fillna('2009-12-01')
+    )
+    .assign(
+        month_joined = lambda x: pd.DatetimeIndex(x['date_joined']).month
+    )
+    .groupby('month_joined')
+    .size()
+    .reset_index(name = 'count')
+)
