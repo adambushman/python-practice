@@ -319,7 +319,7 @@ df_1010 = pd.DataFrame({
 def assign_buckets(ser):
     m = int(np.ceil(max(ser) / 5) + 1)
 
-    r = list(range(0, int(m) * 5, 5))
+    r = list(range(0, m * 5, 5))
 
     return pd.cut(ser, r)
 
@@ -336,3 +336,21 @@ def assign_buckets(ser):
     )
 )
 
+
+# -----------------------
+# Interview Q: 10/7/2022
+    #  Suppose you are given P, which is list of j integer intervals, where j is the number of intervals. The intervals are in a format [a, b]. 
+    #  Given an integer z, can you return the number of overlapping intervals for point z?
+
+
+def count_overlap(P, z):
+    n = 0
+    for p in P:
+        n = (n + 1) if (p[0] <= z and p[1] >= z) else n
+    return n
+
+
+ivals = [[0, 2], [3, 7], [4, 6], [7, 8], [1, 5]]
+
+count_overlap(ivals, 5)
+count_overlap(ivals, 10)
