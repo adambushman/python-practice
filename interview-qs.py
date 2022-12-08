@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
-
-
+import sys
 
 
 # -----------------------
@@ -406,3 +405,30 @@ df_0930.head()
     .size()
     .reset_index(name = 'count')
 )
+
+
+# -----------------------
+# Interview Q: 9/28/2022
+    #  Suppose you are given a list of Q 1D points. 
+    #  Write code to return the value in Q that is the closest to value j. 
+    #  If two values are equally close to j, return the smaller value. 
+
+# Answer
+
+def closest(Q, j):
+    Z = []
+    for q in Q:
+        Z.append(abs(q - j))
+        m = min(Z)
+    Y = []
+    for i in range(1, len(Z)):
+        if m == Z[i]:
+            Y.append(Q[i]) 
+    
+    return min(Y)
+
+
+QQ = [1, -1, -5, 2, 4, -2, 1]
+jj = 3
+
+closest(QQ, jj)
