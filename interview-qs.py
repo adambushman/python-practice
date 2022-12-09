@@ -6,6 +6,30 @@ import sys
 # -----------------------
 # Interview Q: 12/07/2022
     # You are given reviews for a popular iOS app below:
+
+data_1209 = pd.DataFrame({
+    "order_id": [1, 2, 3, 4, 5], 
+    "channel": ['online', 'online', 'in_store', 'in_store', 'online'], 
+    "date": ['2018-09-01', '2018-09-03', '2018-10-11', '2018-08-21', '2018-08-13'], 
+    "month": ['09', '09', '10', '08', '08'], 
+    "revenue": [100, 125, 200, 80, 200]
+})
+
+# Answer
+
+(data_1209
+    .groupby(['month', 'channel'])
+    .agg(
+        avg_rev = ('revenue', 'mean')
+    )
+    .reset_index()
+    .rename(columns={'month': 'Month', 'channel': 'Channel', 'avg_rev': 'Avg. Revenue'})
+)
+
+
+# -----------------------
+# Interview Q: 12/07/2022
+    # You are given reviews for a popular iOS app below:
     # Your task is to determine sentiment from the reviews above. To do this you first decide to write code to find the count of individual words across all the reviews -- write this code using Python.
 
 reviews = ['app is good, but forced updates are too frequent', 'love this app, use it daily to log calories', 'free version of this app has way too many ads', 'app doesn\'t load, 0/10'] 
@@ -432,3 +456,16 @@ QQ = [1, -1, -5, 2, 4, -2, 1]
 jj = 3
 
 closest(QQ, jj)
+
+
+# -----------------------
+# Interview Q: 9/21/2022
+    #  Suppose you are given a list of Q 1D points. 
+    #  Write code to return the value in Q that is the closest to value j. 
+    #  If two values are equally close to j, return the smaller value. 
+
+data_0921 = pd.DataFrame({
+    "date": []
+})
+
+# Answer
