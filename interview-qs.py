@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-import sys
+import datetime as dt
+import time
 
 
 # -----------------------
@@ -460,12 +461,53 @@ closest(QQ, jj)
 
 # -----------------------
 # Interview Q: 9/21/2022
-    #  Suppose you are given a list of Q 1D points. 
-    #  Write code to return the value in Q that is the closest to value j. 
-    #  If two values are equally close to j, return the smaller value. 
+    #  You are given a dataset with information around messages sent between users in a P2P messaging application.
+    #  Given this, write code to find the fraction of messages that are sent between the same sender and receiver within five minutes 
+    #  (e.g. the fraction of messages that receive a response within 5 minutes). 
+
 
 data_0921 = pd.DataFrame({
-    "date": []
+    "date": ['2012-05-11', '2012-05-10', '2012-05-10', '2012-05-07', '2012-05-09', '2012-05-08', '2012-05-11', '2012-05-09', '2012-05-07', '2012-05-07', '2012-05-07', '2012-05-09', '2012-05-07', '2012-05-09', '2012-05-10', '2012-05-08', '2012-05-10', '2012-05-07', '2012-05-08', '2012-05-11', '2012-05-10', '2012-05-09', '2012-05-08', '2012-05-09', '2012-05-07', '2012-05-10', '2012-05-07', '2012-05-09', '2012-05-08', '2012-05-09'], 
+    "timestamp": [461860, 518496, 518401, 465793, 518619, 517357, 540481, 461597, 465551, 517524, 465739, 518631, 518581, 461788, 461786, 517347, 461561, 517258, 461651, 540417, 465394, 461668, 540448, 461755, 518391, 461803, 461827, 465481, 465582, 517609], 
+    "sender_id": [3739274, 1183813, 1183813, 3739274, 2920404, 2948292, 2920404, 2948292, 2948292, 2920404, 2920404, 5839587, 8484948, 2948292, 2948292, 2948292, 3739274, 5839587, 8484948, 3739274, 2920404, 2920404, 1183813, 2948292, 3739274, 2920404, 3739274, 8484948, 1183813, 5839587], 
+    "receiver_id": [1183813, 2948292, 5839587, 2920404, 3739274, 5839587, 3739274, 3739274, 1183813, 3739274, 2948292, 2948292, 2920404, 5839587, 3739274, 2920404, 2948292, 2920404, 2948292, 2920404, 3739274, 8484948, 2948292, 2920404, 2920404, 3739274, 2948292, 2948292, 5839587, 8484948]
 })
 
+data_0921.head()
+
 # Answer
+
+def create_var(df, name):
+    globals()[name] = data_0921
+    return df
+
+
+(data_0921
+    .assign(
+        date = lambda df1: pd.to_datetime(df1['date'])
+    )
+    .sort_values(
+        ['date', 'timestamp', 'sender_id', 'receiver_id'], 
+        ascending = [True, True, True, True]
+    )
+    .pipe(create_var, 'sorted')
+    .merge(
+        sorted, 
+        how = 'inner', 
+        left_on = ['sender_id', 'receiver_id'], 
+        right_on = ['receiver_id', 'sender_id']
+    )
+    .assign(
+        prior = lambda df1: (
+            df1['date_x'] <= df1['date_y']) & (df1['timestamp_x'] <= df1['timestamp_y']
+        ), 
+        within_5 = lambda df1: (df1['timestamp_x'] - df1['timestamp_y']) <= 60 * 5
+    )
+    .pipe(create_var, 'evaled')
+    .query('prior == True & within_5 == True')
+    .shape[0] / evaled.shape[0]
+)
+
+
+x1 = pd.Series(['2020-01-01', '2021-01-01', '2022-01-01'])
+x2 = pd.Series(['2020-01-01', '2022-01-01', '2021-01-01'])
