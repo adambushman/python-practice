@@ -509,5 +509,30 @@ def create_var(df, name):
 )
 
 
-x1 = pd.Series(['2020-01-01', '2021-01-01', '2022-01-01'])
-x2 = pd.Series(['2020-01-01', '2022-01-01', '2021-01-01'])
+# -----------------------
+# Interview Q: 9/21/2022
+    #  Given an array a, write a function to feed in the array elements and check whether they can all be made equal 
+    #  by only multiplying the numbers by 2 or 7. (you can multiply by these #s as many times as you like)
+    #  If all elements can be made equal, return False, otherwise return True.
+
+def madeEqual(arr):
+    def scenario(arr, m):
+        eval = []
+        test = False
+        for i in arr:
+            if i != m:
+                eval.append(((m / i) % 2) == 0 or ((m / i) % 7) == 0)
+
+        if not(all(eval)):
+            scenario(arr, m * 2)
+            scenario(arr, m * 7)
+            if test != True: return test
+        else:
+            test = True
+            return test
+    
+    return scenario(arr, max(arr))
+
+
+madeEqual([128, 4, 2])
+madeEqual([65, 4, 2])
