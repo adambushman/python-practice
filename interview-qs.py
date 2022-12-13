@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import datetime as dt
-import time
+import random as rand
 
 
 # -----------------------
@@ -510,10 +510,12 @@ def create_var(df, name):
 
 
 # -----------------------
-# Interview Q: 9/21/2022
+# Interview Q: 9/19/2022
     #  Given an array a, write a function to feed in the array elements and check whether they can all be made equal 
     #  by only multiplying the numbers by 2 or 7. (you can multiply by these #s as many times as you like)
     #  If all elements can be made equal, return False, otherwise return True.
+
+# Answer
 
 def madeEqual(arr):
     def scenario(arr, m):
@@ -536,3 +538,67 @@ def madeEqual(arr):
 
 madeEqual([128, 4, 2])
 madeEqual([65, 4, 2])
+
+
+# -----------------------
+# Interview Q: 9/14/2022
+    #  Create a function that generates the power set given a set of values.
+    #  For example, if you're given the following set: set = {1, 2, 3}
+    #  Your function should the corresponding power set
+
+# Answer
+
+def getPowerSet(set):
+    def find(arr, x):
+            try:
+                arr.index(x)
+                return True
+            except:
+                return False
+    
+    def numCombo(r, n):
+        def factorial(num):
+            f = 1
+            for n in range(2, num + 1):
+                f = f * n
+            return f
+
+        return int(factorial(n) / (factorial(r) * factorial(n - r)))
+        
+    def sampl(x, n, replace = False):
+        arr = []
+        
+        for i in range(0, n):
+            j = rand.randint(0, len(x)-1)
+            while not(replace) and find(arr, x[j]):
+                j = rand.randint(0, len(x)-1)
+
+            arr.append(x[j])
+
+        return arr
+
+    full = list(set)
+    lvl = list(range(2, len(set)))
+
+    power = []
+    power.append([])
+    
+    for l in lvl:
+        for i in range(0, numCombo(l, len(full))):
+            t = sampl(full, l)
+            t.sort()
+            while find(power, t):
+                t = sampl(full, l)
+                t.sort()
+            power.append(t)
+
+    power.append(full)
+
+    return power
+
+
+s1 = {1, 2, 3}
+s2 = {4, 5, 6, 7}
+
+getPowerSet(s1)
+getPowerSet(s2)
