@@ -652,3 +652,50 @@ def movingAvg(J, p):
 
 
 movingAvg([4, 4, 4, 9, 10, 11, 12], 3)
+
+
+# -----------------------
+# Interview Q: 9/2/2022
+    #  Write code using Python (Pandas library) to show what percent of active stores were fraudulent by day. 
+    #  We want one value for each day in the month. 
+    #  A store can be fraudulent and active on same day. E.g. they could generate revenue until 10AM, then be flagged as fradulent from 10AM onward.
+
+df_0902 = pd.DataFrame({
+    'store_id': ['392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827'], 
+    'date': ['2022-12-01', '2022-12-02', '2022-12-03', '2022-12-04', '2022-12-05', '2022-12-01', '2022-12-02', '2022-12-03', '2022-12-04', '2022-12-05', '2022-12-01', '2022-12-02', '2022-12-03', '2022-12-04', '2022-12-05', '2022-12-01', '2022-12-02', '2022-12-03', '2022-12-04', '2022-12-05', '2022-12-01', '2022-12-02', '2022-12-03', '2022-12-04', '2022-12-05', '2022-12-01', '2022-12-02', '2022-12-03', '2022-12-04', '2022-12-05'], 
+    'status': ['open', 'open', 'open', 'open', 'open', 'open', 'open', 'open', 'fraud', 'open', 'open', 'open', 'closed', 'open', 'fraud', 'open', 'open', 'open', 'closed', 'fraud', 'fraud', 'fraud', 'open', 'fraud', 'closed', 'closed', 'closed', 'fraud', 'open', 'closed'], 
+    'revenue': [1946.5, 2300.72, 2013.87, 1795.87, 1502.03, 2322.77, 2265.76, 1938.45, 1934.63, 2547.55, 2089.72, 1767.5, 0, 2148.14, 1853.98, 2398.07, 2605.37, 1990.49, 0, 1119.34, 1866.7, 2033.86, 2377.66, 2843.75, 0, 0, 0, 1657.41, 1543.57, 0]
+})
+
+df_0902.head()
+
+# Answer
+
+def tallyup(df):
+    new_df = (df
+        .groupby('date')
+        .count()
+        ['store_id']
+        .reset_index()
+        .rename(columns = {'date': 'date', 'store_id': 'count'})
+    )
+
+    return new_df
+
+(tallyup(df_0902)
+    .merge(
+        right = (
+            tallyup(df_0902
+                .query("revenue > 0 & status == 'fraud'")
+            )
+        ), 
+        how = 'inner', 
+        on = 'date'
+    )
+    .assign(
+        percent = lambda dfx: (1.0 * dfx['count_y']) / dfx['count_x']
+    )
+    [['date', 'percent']]
+)
+
+
