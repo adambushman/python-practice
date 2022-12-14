@@ -631,3 +631,24 @@ df_0909.head()
     .reset_index()
     .rename(columns = {'sender_id': 'sender_id', 'receiver_id': 'count'})
 )
+
+
+# -----------------------
+# Interview Q: 9/5/2022
+    #  You are given a list of numbers J and a single number p.  
+    #  Write a function to return the minimum and maximum averages of the sequences of p numbers in the list J.
+
+# Answer
+
+def movingAvg(J, p):
+    ma = []
+
+    for i in list(range(0, len(J) - p + 1)):
+        j = i + p
+        ma.append(np.mean(J[i:j]))
+    
+    print('[Min, Max]')
+    return min(ma), max(ma)
+
+
+movingAvg([4, 4, 4, 9, 10, 11, 12], 3)
