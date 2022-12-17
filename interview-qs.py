@@ -5,6 +5,33 @@ import random as rand
 
 
 # -----------------------
+# Interview Q: 12/17/2022
+    # Write a function that outputs the smallest missing number in a sorted array of n unique integers. 
+    # The integers in the array range from 0 to m-1, where m > n.
+    # The function should be called SmallestMissingNumber and the 3 inputs are: 
+    # the array, the "start value" of the array, the length of the array - 1
+
+# Answer
+
+def SmallestMissingNumber(arr, n, m):
+    def present(array, x):
+        try:
+            array.index(x)
+            return True
+        except:
+            return False
+
+    reals = list(range(0, m))
+
+    for r in reals:
+        if not(present(arr, r)): return r
+
+
+SmallestMissingNumber([0, 1, 3, 4, 8, 9], 5, 10)
+SmallestMissingNumber([4, 7, 9, 11], 4, 12)
+
+
+# -----------------------
 # Interview Q: 12/07/2022
     # You are given reviews for a popular iOS app below:
 
