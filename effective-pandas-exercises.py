@@ -442,7 +442,7 @@ plt.show()
     .resample("YS")
     ['depth']
     .count()
-    .drop(['2014-01-01'])
+    .drop(['2014-01-01']) 
     .rolling(5)
     .sum()
     .dropna()
