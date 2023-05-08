@@ -5,6 +5,26 @@ import random as rand
 
 
 # -----------------------
+# Interview Q: 05/08/2023
+    # Given an array and an integer A, find the maximum for each contiguous subarray of size A.
+
+# Answer
+
+def LargestSubArray(my_arr, my_A):
+    for i in range(A, len(my_arr) + 1):
+        sub = my_arr[i-my_A:i]
+        sub_chr = ",".join(str(a) for a in sub)
+        maxx = max(sub_chr)
+
+        print("In [" + sub_chr + "], max is " + maxx)
+
+
+my_array = [1, 2, 3, 1, 4, 5, 2, 3, 6]
+A = 3
+
+LargestSubArray(my_array, A)
+
+# -----------------------
 # Interview Q: 12/17/2022
     # Write a function that outputs the smallest missing number in a sorted array of n unique integers. 
     # The integers in the array range from 0 to m-1, where m > n.
