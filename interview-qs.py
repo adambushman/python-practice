@@ -2,6 +2,58 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 import random as rand
+import matplotlib.pyplot as plot
+
+
+# -----------------------
+# Interview Q: 05/12/2023
+    # Using the dataset, write code to find the following: 
+    #   Number of unique names across the dataset, split by both # of unique male/female names
+    #   Top 10 most popular male and female names, along with their associated counts
+    #   The top 10 most popular names from 2010+, with an associated plot to show the relative growth between names
+
+url = 'https://raw.githubusercontent.com/erood/interviewqs.com_code_snippets/master/Datasets/ddi_baby_names.csv'
+
+data_0512 = pd.read_csv(url)
+
+# Answer
+
+# Part 1
+(data_0512
+    .groupby("gender")
+    .agg(uniq_num = ("name", "nunique"))
+    .reset_index()
+)
+
+# Part 2
+(data_0512
+    .groupby(["gender", "name"])
+    .agg(freq = ("count", "sum"))
+    .sort_values(["gender", "freq"], ascending = [False, False])
+    .groupby("gender")
+    .head(10)
+    .reset_index()
+)
+
+# Part 3
+(data_0512
+    .merge(
+        (data_0512
+            .query("year >= 2010")
+            .groupby(["gender", "name"])
+            .agg(freq = ("count", "sum"))
+            .sort_values(["gender", "freq"], ascending = [False, False])
+            .groupby("gender")
+            .head(10)
+            .reset_index()
+        ), 
+        how = 'inner', 
+        on = ["gender", "name"]
+    )
+    .query("year >= 2010")
+    [["year", "name", "gender", "count"]]
+)
+
 
 
 # -----------------------
