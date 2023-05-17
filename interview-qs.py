@@ -6,6 +6,73 @@ import matplotlib.pyplot as plot
 
 
 # -----------------------
+# Interview Q: 05/17/2023
+    # Suppose you're given a matrix of 1s and 0s that represents a map of rivers. You can assume that the grid cells 
+    #   in your map are only connected horizontally and vertically (e.g. no diagonal connections). 
+    #   You can assume that 1 represents water (your river) and 0 represents land/your river bank. 
+    #   Each cell has a length of 1 and is square in your map. Given this, write code to determine the perimeter of your river.
+
+def find_perimeter(matrix):
+    perim = 0
+
+    for r in range(0, len(matrix)):
+        for c in range(0, len(matrix[r])):
+            # Not a bank
+            if(matrix[r][c] != 0):
+                # Left
+                if(r == 0):
+                    perim = perim + 1
+                else:
+                    perim = perim + 1 if matrix[r-1][c] == 0 else perim
+                
+                # Right
+                if(r == len(matrix) - 1):
+                    perim = perim + 1
+                else:
+                    perim = perim + 1 if matrix[r+1][c] == 0 else perim
+                
+                # Top
+                if(c == 0):
+                    perim = perim + 1
+                else:
+                    perim = perim + 1 if matrix[r][c-1] == 0 else perim
+
+                # Bottom
+                if(c == len(matrix[r]) - 1):
+                    perim = perim + 1
+                else:
+                    perim = perim + 1 if matrix[r][c+1] == 0 else perim
+    
+    return(perim)
+
+
+my_matrix = ([
+    [1, 0, 1], 
+    [1, 1, 1]
+])
+
+print(find_perimeter(my_matrix))
+
+my_matrix2 = ([
+    [1, 0]
+])
+
+print(find_perimeter(my_matrix2))
+
+my_matrix3 = ([
+    [1,1,1,0,0,0,0,0,0],
+    [0,0,1,0,0,0,0,0,0],
+    [0,1,1,0,0,0,0,0,0],
+    [0,1,0,0,1,1,1,0,0],
+    [0,1,0,0,1,1,1,1,0],
+    [0,1,1,1,1,0,0,1,1],
+    [0,0,0,0,0,0,0,0,0]
+])
+
+print(find_perimeter(my_matrix3))
+
+
+# -----------------------
 # Interview Q: 05/12/2023
     # Using the dataset, write code to find the following: 
     #   Number of unique names across the dataset, split by both # of unique male/female names
