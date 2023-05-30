@@ -6,6 +6,24 @@ import matplotlib.pyplot as plot
 
 
 # -----------------------
+# Interview Q: 05/30/2023
+    # Suppose an individual is taxed 30% if earnings for a given week are > = $2,000. 
+    # If earnings land < $2,000 for the week, the individual is taxed at a lower rate of 15%.
+    # Write a function using Python to calculate both the pre-tax and post-tax earnings for a given individual, 
+    # with the ability to feed in the hourly wage and the weekly hours as inputs. 
+
+def calc_earnings(wage, hours):
+    if(wage * hours >= 2000):
+        rate = 0.3
+    else:
+        rate = 0.15
+    
+    print(f'Pre-tax earnings: {round(wage * hours, 2)}\nPost-tax earnings: {round(wage * hours * (1-rate), 2)}')
+
+calc_earnings(40, 35) # Betlow 2000
+calc_earnings(79, 41) # Above 2000
+
+# -----------------------
 # Interview Q: 05/17/2023
     # Suppose you're given a matrix of 1s and 0s that represents a map of rivers. You can assume that the grid cells 
     #   in your map are only connected horizontally and vertically (e.g. no diagonal connections). 
