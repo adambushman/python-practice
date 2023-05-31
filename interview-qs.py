@@ -1,8 +1,49 @@
 import pandas as pd
 import numpy as np
 import datetime as dt
+from pandas.tseries import offsets
 import random as rand
 import matplotlib.pyplot as plot
+
+
+# -----------------------
+# Interview Q: 05/31/2023
+    # Create a retention chart showing the new users and the percent of users still active
+
+url = 'https://raw.githubusercontent.com/erood/interviewqs.com_code_snippets/master/Datasets/online_retail.csv'
+
+data_0531 = pd.read_csv(url)
+
+# Answer
+
+(data_0531
+    .assign(
+        real_date = lambda dfx: pd.to_datetime(dfx["InvoiceDate"]).dt.date, 
+        month_end = lambda dfy: dfy["real_date"] + offsets.MonthEnd(), 
+        signup_month = lambda dfz: (dfz.groupby("CustomerID")
+            ["month_end"]
+            .transform("min")), 
+        periods_af = lambda dfa: (dfa["month_end"].dt.to_period("M").view(dtype='int64') - dfa["signup_month"].dt.to_period("M").view(dtype='int64'))
+    )
+    .groupby(["signup_month", "periods_af"])
+    .agg(
+        users = ("CustomerID", "nunique")
+    )
+    .reset_index()
+    .assign(
+        new_users = lambda dfb: (dfb.groupby("signup_month")
+            ["users"]
+            .transform("max"))
+    )
+    .query("periods_af > 0")
+    .assign(retention = lambda dfc: dfc["users"] / dfc["new_users"])
+    .pivot_table(
+        values = "retention", 
+        index = ["signup_month", "new_users"], 
+        columns = "periods_af", 
+    )
+    .style.background_gradient(axis = 1)
+)
 
 
 # -----------------------
