@@ -1,0 +1,79 @@
+---
+title: "Python Interview Questions"
+description: "Interview questions and prompts for practicing Python programming and its associated libraries."
+---
+
+```{python}
+
+import pandas as pd
+import numpy as np
+import datetime as dt
+from pandas.tseries import offsets
+import random as rand
+import matplotlib.pyplot as plot
+
+```
+
+## Interview Q: 05/31/2023
+
+Create a retention chart showing the new users and the percent of users still active.
+
+```{python}
+
+url = 'https://raw.githubusercontent.com/erood/interviewqs.com_code_snippets/master/Datasets/online_retail.csv'
+
+data_0531 = pd.read_csv(url)
+
+```
+
+```{python}
+
+table = (data_0531
+    .assign(
+        real_date = lambda dfx: pd.to_datetime(dfx["InvoiceDate"]).dt.date, 
+        month_end = lambda dfy: dfy["real_date"] + offsets.MonthEnd(), 
+        signup_month = lambda dfz: (dfz.groupby("CustomerID")
+            ["month_end"]
+            .transform("min")), 
+        periods_af = lambda dfa: (dfa["month_end"].dt.to_period("M").view(dtype='int64') - dfa["signup_month"].dt.to_period("M").view(dtype='int64'))
+    )
+    .groupby(["signup_month", "periods_af"])
+    .agg(
+        users = ("CustomerID", "nunique")
+    )
+    .reset_index()
+    .assign(
+        new_users = lambda dfb: (dfb.groupby("signup_month")
+            ["users"]
+            .transform("max"))
+    )
+    .query("periods_af > 0")
+    .assign(
+        retention = lambda dfc: dfc["users"] / dfc["new_users"], 
+        signup_month = lambda dfd: dfd["signup_month"]#.dt.strftime('%b %d,%Y')
+    )
+    .pivot_table(
+        values = "retention", 
+        index = ["signup_month", "new_users"], 
+        columns = "periods_af", 
+    )
+    .reset_index()
+    .rename_axis(None, axis=1)
+)
+
+```
+
+```{python}
+
+(table
+    .style
+    .background_gradient(subset = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], axis = 1)
+    .applymap(lambda x: 'background-color: transparent; color: transparent;' if pd.isnull(x) else '')
+    .format({
+        "signup_month": "{:%b %d, %Y}", 
+        1: "{:,.0%}", 2: "{:,.0%}", 3: "{:,.0%}", 4: "{:,.0%}", 5: "{:,.0%}", 6: "{:,.0%}", 
+        7: "{:,.0%}", 8: "{:,.0%}", 9: "{:,.0%}", 10: "{:,.0%}", 11: "{:,.0%}", 12: "{:,.0%}"
+    })
+)
+
+```
