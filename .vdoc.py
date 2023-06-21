@@ -1,9 +1,11 @@
----
-title: "Python Interview Questions"
-description: "Interview questions and prompts for practicing Python programming and its associated libraries."
----
-
-```{python}
+# type: ignore
+# flake8: noqa
+#
+#
+#
+#
+#
+#
 
 import pandas as pd
 import numpy as np
@@ -13,30 +15,29 @@ import random as rand
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-```
-
-
-
-
-## New
-
-Suppose you have a dataset listing the leaders for all independent states in the world as outlined in Gleditsch and Ward.
-
-With this data, plot the number of leaders by their exit code ('exitcode' in data) and the year that their rule ended ('yrdied' in the data). You can represent this in a stacked bar chart, with the x-axis showing the end year and the y-axis showing the count of leaders by exitcode represented as a stacked bar chart.
-
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 # Reading Google Sheet data
 url = 'https://docs.google.com/spreadsheets/d/10h1G4q9YbCLUZ5aCymr1emezeHw6C51JdW5wO4y7nwE/export?gid=1759582157&format=csv'
 data_0621 = pd.read_csv(url)
 
-```
-
-```{python}
+#
+#
+#
 
 grouped = (data_0621
-    .query('exitcode !="Unknown"')
     .assign(
         exityear = lambda dfx: pd.to_datetime(dfx['enddate']).dt.year, 
         exitbin = lambda dfy: pd.cut(dfy['exityear'], range(1870, 2020, 15))
@@ -49,29 +50,45 @@ grouped = (data_0621
     )
 )
 
-```
+#
+#
+#
+#
 
+grouped.plot(kind="bar", legend = False)
 
-```{python}
+#
+#
+#
+#
+#
 
-grouped.plot(kind="bar", stacked=True, legend = False)
+sns.set_theme()
 
-```
+sns.barplot(grouped, x="exitbin", y="freq", ci=False)
 
+plt.xticks(rotation=45)
+plt.xlabel('Year Leadership Ended')
+plt.ylabel('Count of Leaders')
+plt.title('The Reign of National Leaders')
+plt.legend([], [], frameon=False)
+plt.show()
 
-## Retention Chart | 05/31/2023
-
-Create a retention chart showing the new users and the percent of users still active.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 
 url = 'https://raw.githubusercontent.com/erood/interviewqs.com_code_snippets/master/Datasets/online_retail.csv'
 
 data_0531 = pd.read_csv(url)
 
-```
-
-```{python}
+#
+#
+#
 
 table = (data_0531
     .assign(
@@ -106,9 +123,9 @@ table = (data_0531
     .rename_axis(None, axis=1)
 )
 
-```
-
-```{python}
+#
+#
+#
 
 (table
     .style
@@ -121,16 +138,16 @@ table = (data_0531
     })
 )
 
-```
-
-
-## Pre/Post-Tax Earnings | 05/30/2023
-
-Suppose an individual is taxed 30% if earnings for a given week are > = $2,000. If earnings land < $2,000 for the week, the individual is taxed at a lower rate of 15%. 
-
-Write a function using Python to calculate both the pre-tax and post-tax earnings for a given individual, with the ability to feed in the hourly wage and the weekly hours as inputs.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def calc_earnings(wage, hours):
     if(wage * hours >= 2000):
@@ -143,14 +160,14 @@ def calc_earnings(wage, hours):
 calc_earnings(40, 35) # Below 2000
 calc_earnings(79, 41) # Above 2000
 
-```
-
-
-## Matrix Perimeter | 05/17/2023
-
-Suppose you're given a matrix of 1s and 0s that represents a map of rivers. You can assume that the grid cells in your map are only connected horizontally and vertically (e.g. no diagonal connections). You can assume that 1 represents water (your river) and 0 represents land/your river bank. Each cell has a length of 1 and is square in your map. Given this, write code to determine the perimeter of your river.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 def find_perimeter(matrix):
     perim = 0
@@ -185,11 +202,11 @@ def find_perimeter(matrix):
     
     return(perim)
 
-```
-
-Example with a basic 2x3 matrix included in the prompt:
-
-```{python}
+#
+#
+#
+#
+#
 
 my_matrix = ([
     [1, 0, 1], 
@@ -198,11 +215,11 @@ my_matrix = ([
 
 print(find_perimeter(my_matrix))
 
-```
-
-Example with a basic 1x2 matrix included in the prompt:
-
-```{python}
+#
+#
+#
+#
+#
 
 my_matrix2 = ([
     [1, 0]
@@ -210,11 +227,11 @@ my_matrix2 = ([
 
 print(find_perimeter(my_matrix2))
 
-```
-
-Example with a complex 7x9 matrix I created:
-
-```{python}
+#
+#
+#
+#
+#
 
 my_matrix3 = ([
     [1,1,1,0,0,0,0,0,0],
@@ -228,28 +245,28 @@ my_matrix3 = ([
 
 print(find_perimeter(my_matrix3))
 
-```
-
-
-## Baby Name Popularity | 5/12/2023
-
-Using the dataset, write code to find the following: 
-
-*   Number of unique names across the dataset, split by both # of unique male/female names
-*   Top 10 most popular male and female names, along with their associated counts
-*   The top 10 most popular names from 2010+, with an associated plot to show the relative growth between names
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 url = 'https://raw.githubusercontent.com/erood/interviewqs.com_code_snippets/master/Datasets/ddi_baby_names.csv'
 
 data_0512 = pd.read_csv(url)
 
-```
-
-Part 1:
-
-```{python}
+#
+#
+#
+#
+#
 
 (data_0512
     .groupby("gender")
@@ -257,11 +274,11 @@ Part 1:
     .reset_index()
 )
 
-```
-
-Part 2:
-
-```{python}
+#
+#
+#
+#
+#
 
 (data_0512
     .groupby(["gender", "name"])
@@ -272,11 +289,11 @@ Part 2:
     .reset_index()
 )
 
-```
-
-Part 3:
-
-```{python}
+#
+#
+#
+#
+#
 
 (data_0512
     .merge(
@@ -296,14 +313,14 @@ Part 3:
     [["year", "name", "gender", "count"]]
 )
 
-```
-
-
-## Max Contiguous Subarray | 05/08/2023
-
-Given an array and an integer A, find the maximum for each contiguous subarray of size A.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 def LargestSubArray(my_arr, my_A):
     for i in range(A, len(my_arr) + 1):
@@ -313,23 +330,23 @@ def LargestSubArray(my_arr, my_A):
 
         print("In [" + sub_chr + "], max is " + maxx)
 
-```
-
-```{python}
+#
+#
+#
 
 my_array = [1, 2, 3, 1, 4, 5, 2, 3, 6]
 A = 3
 
 LargestSubArray(my_array, A)
 
-```
-
-
-## 12/17/2022
-
-Write a function that outputs the smallest missing number in a sorted array of n unique integers. The integers in the array range from 0 to m-1, where m > n. The function should be called SmallestMissingNumber and the 3 inputs are: the array, the "start value" of the array, the length of the array - 1
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 def SmallestMissingNumber(arr, n, m):
     def present(array, x):
@@ -344,21 +361,21 @@ def SmallestMissingNumber(arr, n, m):
     for r in reals:
         if not(present(arr, r)): return r
 
-```
-
-```{python}
+#
+#
+#
 
 SmallestMissingNumber([0, 1, 3, 4, 8, 9], 5, 10)
 SmallestMissingNumber([4, 7, 9, 11], 4, 12)
 
-```
-
-
-## Evaluating Channel Sales | 12/07/2022
-
-Evaluate the average revenue by month and channel
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 data_1209 = pd.DataFrame({
     "order_id": [1, 2, 3, 4, 5], 
@@ -368,9 +385,9 @@ data_1209 = pd.DataFrame({
     "revenue": [100, 125, 200, 80, 200]
 })
 
-```
-
-```{python}
+#
+#
+#
 
 (data_1209
     .groupby(['month', 'channel'])
@@ -381,15 +398,15 @@ data_1209 = pd.DataFrame({
     .rename(columns={'month': 'Month', 'channel': 'Channel', 'avg_rev': 'Avg. Revenue'})
 )
 
-```
-
-
-## App Reviews | 12/07/2022
-
-*   You are given reviews for a popular iOS app below:
-*   Your task is to determine sentiment from the reviews above. To do this you first decide to write code to find the count of individual words across all the reviews -- write this code using Python.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def count_words(allreviews):
     uWords = []
@@ -401,29 +418,29 @@ def count_words(allreviews):
     
     return len(uWords)
 
-```
-
-```{python}
+#
+#
+#
 
 reviews = ['app is good, but forced updates are too frequent', 'love this app, use it daily to log calories', 'free version of this app has way too many ads', 'app doesn\'t load, 0/10'] 
 
 count_words(reviews)
 
-```
-
-
-## Filtering Students | 11/30/2022
-The dataframe is showing information about students. Write code using Python Pandas to select the rows where the students' favorite color is blue or yellow and their grade is above 90.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 
 def normalize(vec):
     norm_vec = (vec - vec.mean()) / vec.std()
     return(norm_vec)
 
-```
-
-```{python}
+#
+#
+#
 
 df_1130 = pd.DataFrame({
     "Age": [20, 19, 22, 21], 
@@ -436,16 +453,16 @@ df_1130 = pd.DataFrame({
     .assign(norm_Grade = lambda a_df: normalize(a_df['Grade']))
 )
 
-```
-
-
-## Calculate Earnings | 11/28/2022
-
-Suppose an individual is taxed 30% if earnings for a given week are > = $2,000. If earnings land < $2,000 for the week, the individual is taxed at a lower rate of 15%.
-
-Write a function using Python to calculate both the pre-tax and post-tax earnings for a given individual, with the ability to feed in the hourly wage and the weekly hours as inputs.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def calc_earnings(hourly_wage, weekly_hours):
     t_earnings = hourly_wage * weekly_hours
@@ -456,21 +473,21 @@ def calc_earnings(hourly_wage, weekly_hours):
     print("Pre-tax earnings: " + "${:,.2f}".format(t_earnings) + "\nPost-tax earnings: " + "${:.2f}".format(n_earnings) + ", at rate of " + "{:0%}".format(tax))
     return t_earnings, n_earnings
 
-```
-
-```{python}
+#
+#
+#
 
 calc_earnings(55, 35)
 calc_earnings(70, 40)
 
-```
-
-
-## Something | 11/21/2022
-
-The dataframe is showing information about students. Write code using Python Pandas to select the rows where the students' favorite color is blue or yellow and their grade is above 90.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 df_1121 = pd.DataFrame({
     "Age": [20, 19, 22, 21], 
@@ -483,14 +500,14 @@ df_1121 = pd.DataFrame({
     .loc[(df_1121["Favorite Color"] == "blue") & (df_1121["Grade"] > 90)]
 )
 
-```
-
-
-## Finding Prime | 11/18/2022
-
-Given a single #, n, write a function using Python to return whether or not the # is prime. Additionally, if the inputted # is prime, save it into an array, a. 
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 def is_prime(n):
     if (n < 2):
@@ -510,9 +527,9 @@ def is_prime(n):
 
     return result
 
-```
-
-```{python}
+#
+#
+#
 
 a = []
 
@@ -522,18 +539,18 @@ is_prime(5)
 
 print(a)
 
-```
-
-
-## 11/09/2022
-
-You need to assign the following letter grades based on final_grade_pct in a new column named "final_grade_letter":
-
-90: A, 81-90: B, 71-80: C, <70: D
-
-Write a function using Python to loop through the table and assign the appropriate letter grades to each student, adding a new column to the existing dataframe, df.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def add_letter_grades(df):
     def letter_logic(vec):
@@ -559,9 +576,9 @@ def add_letter_grades(df):
         )
     )
 
-```
-
-```{python}
+#
+#
+#
 
 df_1109 = pd.DataFrame({
     "student_name": ["Leon Rose", "Jamal Mosley", "Michael Malone", "Mike Brown", "Nick Nurse"], 
@@ -572,14 +589,14 @@ df_1109 = pd.DataFrame({
 
 add_letter_grades(df_1109)
 
-```
-
-
-## American Football Scores | 11/07/2022
-
-There are a few ways we can score in American Football. Given a score value, can you write a function that lists the possible ways the score could have been achieved?
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 def possibilities(score):
     vals = [8, 7, 6, 3, 2]
@@ -599,20 +616,20 @@ def possibilities(score):
     
     check([], score)
 
-```
-
-```{python}
+#
+#
+#
 
 possibilities(8)
 
-```
-
-
-## Product Launch Summary | 10/28/2022
-
-A Product Manager asked you to give an update on how the Alpha Launch is going. You decide to aggregate (e.g. pivot) the events by each app to provide a quick summary. Write the aggregation using Python (Pandas).
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 data_1028 = pd.DataFrame({
     "time": [1625642764, 1625640152, 1625640161, 1625640161, 1625642754, 1625642753, 1625640153, 1625599912, 1625599929, 1625642767, 1625640154, 
@@ -638,16 +655,16 @@ data_1028 = pd.DataFrame({
     )
 )
 
-```
-
-
-## Printing Sequence | 10/26/2022
-
-Write a function that takes in an integer n, and prints out integers from 1 to n inclusive.
-
-Additionally, if %3 == 0 then print "foo" in place of the integer, if %5 == 0 then print "ie" in place of the integer, and if both conditions are true then print "foo-ie" in place of the integer.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def print_num(n):
     for r in range(1, n+1):
@@ -660,22 +677,22 @@ def print_num(n):
         else:
             print(str(r))
 
-```
-
-```{python}
+#
+#
+#
 
 print_num(15)
 
-```
-
-
-##  | 10/19/2022
-
-You're given a set of data that is aggregated on a monthly basis (as illustrated in Table A).
-
-Can you write code that can expand this monthly table into a daily table which spreads revenue across the 30 day period (as shown in Table B)? 
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 data_1019 = pd.DataFrame({
     "Month": [1, 2, 3], 
@@ -697,16 +714,16 @@ data_1019 = pd.DataFrame({
     .rename(columns = {'R': 'Revenue'})
 )
 
-```
-
-
-## String Functions | 10/17/2022
-
-Write a function to return a boolean that indicates if two strings are one edit away from being identical.
-
-The definition of an "edit" is as follows: Insert one character, Remove one character, Replace one character
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def oneEditAway(str1, str2):
     if(str1 == str2):
@@ -722,22 +739,22 @@ def oneEditAway(str1, str2):
         t = len(c) - sum(c) + (1 if len(str1) != len(str2) else 0)
         return t == 1
 
-```
-
-```{python}
+#
+#
+#
 
 oneEditAway("pea", "pea")
 oneEditAway("pea", "lea")
 oneEditAway("pea", "seas")
 
-```
-
-
-## Salary Summaries | 10/10/2022
-
-Can you pull the average, median, minimum, maximum, and standard deviations for salary across 5 year experience buckets at Company XYZ?
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 def assign_buckets(ser):
     m = int(np.ceil(max(ser) / 5) + 1)
@@ -746,9 +763,9 @@ def assign_buckets(ser):
 
     return pd.cut(ser, r)
 
-```
-
-```{python}
+#
+#
+#
 
 df_1010 = pd.DataFrame({
     "employee_name": ([
@@ -791,16 +808,16 @@ df_1010 = pd.DataFrame({
     )
 )
 
-```
-
-
-## Overlapping Intervals | 10/7/2022
-
-Suppose you are given P, which is list of j integer intervals, where j is the number of intervals. The intervals are in a format [a, b]. 
-
-Given an integer z, can you return the number of overlapping intervals for point z?
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def count_overlap(P, z):
     n = 0
@@ -808,27 +825,27 @@ def count_overlap(P, z):
         n = (n + 1) if (p[0] <= z and p[1] >= z) else n
     return n
 
-```
-
-```{python}
+#
+#
+#
 
 ivals = [[0, 2], [3, 7], [4, 6], [7, 8], [1, 5]]
 
 count_overlap(ivals, 5)
 count_overlap(ivals, 10)
 
-```
-
-
-##  | 9/30/2022
-
-Below is a snippet from a table that contains information about employees that work at Company XYZ:
-
-Company XYZ recently migrated database systems causing some of the date_joined records to be NULL. 
-
-You're told by an analyst in human resources NULL records for the date_joined field indicates the employees joined prior to 2010. You also find out there are multiple employees with the same name and duplicate records for some employees.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 df_0930 = pd.DataFrame({
     "employee_name": ['Andy', 'Beth', 'Cindy', 'Dale', 'Sebastian Andrade', 'Sebastian Andrade', 'Cruz Ellis', 'Andy', 'Sebastian Andrade', 'Judy Vaughan', 'Sebastian Andrade', 'Santiago', 'Cruz Ellis', 'Judy Vaughan', 'Sebastian Andrade', 'Judy Vaughan', 'Santiago', 'Judy Vaughan', 'Sebastian Andrade', 'Sebastian Andrade'], 
@@ -851,14 +868,14 @@ df_0930 = pd.DataFrame({
     .reset_index(name = 'count')
 )
 
-```
-
-
-## Values Close to Q | 9/28/2022
-
-Suppose you are given a list of Q 1D points. Write code to return the value in Q that is the closest to value j. If two values are equally close to j, return the smaller value. 
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
 
 def closest(Q, j):
     Z = []
@@ -872,25 +889,25 @@ def closest(Q, j):
     
     return min(Y)
 
-```
-
-```{python}
+#
+#
+#
 
 QQ = [1, -1, -5, 2, 4, -2, 1]
 jj = 3
 
 closest(QQ, jj)
 
-```
-
-
-## Quick Response Messages | 9/21/2022
-
-You are given a dataset with information around messages sent between users in a P2P messaging application.
-
-Given this, write code to find the fraction of messages that are sent between the same sender and receiver within five minutes (e.g. the fraction of messages that receive a response within 5 minutes). 
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 data_0921 = pd.DataFrame({
     "date": ['2012-05-11', '2012-05-10', '2012-05-10', '2012-05-07', '2012-05-09', '2012-05-08', '2012-05-11', '2012-05-09', '2012-05-07', '2012-05-07', '2012-05-07', '2012-05-09', '2012-05-07', '2012-05-09', '2012-05-10', '2012-05-08', '2012-05-10', '2012-05-07', '2012-05-08', '2012-05-11', '2012-05-10', '2012-05-09', '2012-05-08', '2012-05-09', '2012-05-07', '2012-05-10', '2012-05-07', '2012-05-09', '2012-05-08', '2012-05-09'], 
@@ -903,9 +920,9 @@ def create_var(df, name):
     globals()[name] = data_0921
     return df
 
-```
-
-```{python}
+#
+#
+#
 
 (data_0921
     .assign(
@@ -933,16 +950,16 @@ def create_var(df, name):
     .shape[0] / evaled.shape[0]
 )
 
-```
-
-
-## Equal Array Elements | 9/19/2022
-
-Given an array a, write a function to feed in the array elements and check whether they can all be made equal by only multiplying the numbers by 2 or 7. (you can multiply by these #s as many times as you like)
-
-If all elements can be made equal, return False, otherwise return True.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def madeEqual(arr):
     def scenario(arr, m):
@@ -962,23 +979,23 @@ def madeEqual(arr):
     
     return scenario(arr, max(arr))
 
-```
-
-```{python}
+#
+#
+#
 
 madeEqual([128, 4, 2])
 madeEqual([65, 4, 2])
 
-```
-
-
-## Powersets | 9/14/2022
-
-Create a function that generates the power set given a set of values.
-
-For example, if you're given the following set: set = {1, 2, 3}. Your function should the corresponding power set.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def getPowerSet(set):
     def find(arr, x):
@@ -1028,9 +1045,9 @@ def getPowerSet(set):
 
     return power
 
-```
-
-```{python}
+#
+#
+#
 
 s1 = {1, 2, 3}
 s2 = {4, 5, 6, 7}
@@ -1038,16 +1055,16 @@ s2 = {4, 5, 6, 7}
 getPowerSet(s1)
 getPowerSet(s2)
 
-```
-
-
-## Sent Messages | 9/9/2022
-
-Create a function that generates the power set given a set of values.
-
-For example, if you're given the following set: set = {1, 2, 3}, Your function should return the corresponding power set
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 df_0909 = pd.DataFrame({
     'date': ['2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-01', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02', '2018-03-02'], 
@@ -1067,16 +1084,16 @@ df_0909 = pd.DataFrame({
     .rename(columns = {'sender_id': 'sender_id', 'receiver_id': 'count'})
 )
 
-```
-
-
-## Moving Averages | 9/5/2022
-
-You are given a list of numbers J and a single number p.  
-
-Write a function to return the minimum and maximum averages of the sequences of p numbers in the list J.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def movingAvg(J, p):
     ma = []
@@ -1088,24 +1105,24 @@ def movingAvg(J, p):
     print('[Min, Max]')
     return min(ma), max(ma)
 
-```
-
-```{python}
+#
+#
+#
 
 movingAvg([4, 4, 4, 9, 10, 11, 12], 3)
 
-```
-
-
-## Fradulent Stores | 9/2/2022
-
-Write code using Python (Pandas library) to show what percent of active stores were fraudulent by day. 
-
-We want one value for each day in the month. 
-
-A store can be fraudulent and active on same day. E.g. they could generate revenue until 10AM, then be flagged as fradulent from 10AM onward.
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 def tallyup(df):
     new_df = (df
@@ -1118,9 +1135,9 @@ def tallyup(df):
 
     return new_df
 
-```
-
-```{python}
+#
+#
+#
 
 df_0902 = pd.DataFrame({
     'store_id': ['392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827', '392840', '839284', '882722', '646463', '248274', '994827'], 
@@ -1145,4 +1162,6 @@ df_0902 = pd.DataFrame({
     [['date', 'percent']]
 )
 
-```
+#
+#
+#
