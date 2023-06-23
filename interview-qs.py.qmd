@@ -15,15 +15,39 @@ import seaborn as sns
 
 ```
 
+## Leading State in Births
 
+Given the following dataset, can you find the top state for baby births? One way to show this visually to a stakeholder would be to plot the births by state (using something like matplotlib).
 
+```{python}
 
-## New
+url = 'https://raw.githubusercontent.com/guipsamora/pandas_exercises/master/06_Stats/US_Baby_Names/US_Baby_Names_right.csv'
+data_0623 = pd.read_csv(url)
+
+```
+
+```{python}
+
+(data_0623
+    .groupby(['State'])
+    .agg(births = ('Count', 'sum'))
+    .reset_index()
+    .sort_values(['births'], ascending = [False])
+    .head(10)
+    
+    .plot(
+        kind = 'bar', x = 'State', y = 'births', rot = 90, legend = False, 
+        title = 'Leading States in Births Since 2004', xlabel = "State", ylabel = "Births"
+    )
+)
+
+```
+
+## Leadership Duration
 
 Suppose you have a dataset listing the leaders for all independent states in the world as outlined in Gleditsch and Ward.
 
 With this data, plot the number of leaders by their exit code ('exitcode' in data) and the year that their rule ended ('yrdied' in the data). You can represent this in a stacked bar chart, with the x-axis showing the end year and the y-axis showing the count of leaders by exitcode represented as a stacked bar chart.
-
 
 ```{python}
 
@@ -50,7 +74,6 @@ grouped = (data_0621
 )
 
 ```
-
 
 ```{python}
 
