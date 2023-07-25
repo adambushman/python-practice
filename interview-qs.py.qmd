@@ -12,8 +12,56 @@ from pandas.tseries import offsets
 import random as rand
 import matplotlib.pyplot as plt
 import seaborn as sns
+import statsmodels.api as sm
+# from sklearn.linear_model import LinearRegression
 
 ```
+
+
+## Cereal Ratings: top 3 variables
+
+Suppose you have a dataset which lists 80 cereals, containing various descriptive fiels. Using this data, can you determine the best 3 independent variables that help determine cereal rating?
+
+```{python}
+
+url = 'https://docs.google.com/spreadsheets/d/1OyFwsZ77RnGiwSSkTPx6j9V9qyOqitysQij4WW4nhMU/export?gid=1943041330&format=csv'
+data_0725 = pd.read_csv(url)
+
+```
+
+```{python}
+# Create dummy variables from categories
+dummies = pd.get_dummies(data_0725
+    .drop('name', axis=1)
+    .select_dtypes(include='object')
+)
+
+cat_cols = data_0725.select_dtypes(include='object').columns
+
+# Separate X and Y
+y_vars = data_0725['rating']
+x_vars = pd.concat([
+    (data_0725
+        .drop(cat_cols, axis=1)
+        .drop('rating', axis=1)
+    ), 
+    dummies # Add back the dummy variables
+], axis=1)
+
+```
+
+```{python}
+# Speficy model, fit, and summarize
+model = sm.OLS(y_vars, x_vars)
+est = model.fit()
+est.summary()
+```
+
+Based on the results of the linear regression, the top 3 independent variables that help determine cereal rating are:
+
+*   `type`: the type of cereal has the largest coefficient amongst statistically significant features
+*   `mfr`: the manufacturer has the next highest coefficient of statistically significant features
+*   `fiber`: finally, the fiber content is the next largest coefficient of statistically significant features
 
 ## Leading State in Births
 
