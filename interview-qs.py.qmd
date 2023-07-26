@@ -18,6 +18,27 @@ import statsmodels.api as sm
 ```
 
 
+## Retail Revenue Trends
+
+Given the table called 'orders' write code to show the average revenue by month by channel. The format of the result should look like the following: 
+
+Month | Channel | Avg. Revenue
+
+```{python}
+raw_data = {'order_id': [1, 2, 3, 4, 5, 6],'channel': ['Online', 'Online', 'In_Store', 'In_Store', 'Online', 'Online'], 'date': ['2018-09-01', '2018-09-03', '2018-10-11', '2018-08-21', '2018-08-13', '2018-10-29'], 'month': ['09', '09', '10', '08', '08', '10'],'revenue' :[100, 125, 200, 80, 200, 100]}
+    
+
+df = pd.DataFrame(raw_data, columns = ['order_id', 'channel', 'date', 'month', 'revenue'])
+```
+
+```{python}
+(df
+    .groupby(['month', 'channel'])
+    .agg(avg_revenue =  ('revenue', 'mean'))
+    .reset_index()
+)
+```
+
 ## Cereal Ratings: top 3 variables
 
 Suppose you have a dataset which lists 80 cereals, containing various descriptive fiels. Using this data, can you determine the best 3 independent variables that help determine cereal rating?
