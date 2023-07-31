@@ -18,6 +18,29 @@ import statsmodels.api as sm
 ```
 
 
+## Reverse an array, up to a point
+
+Suppose you're given an array, a, as well as a position, p. Write a function to reverse your array, but only up to the position given in p. The rest of your array should remain untouched.
+
+For example, given the following:
+
+Your function should return:
+
+```{python}
+a = [1, 3, 4, 6]
+p = 2
+# Should return [3,1,4,6]
+
+def reverse(array, point):
+    p1 = array[0:p]
+    p1.reverse()
+    p2 = array[p:len(array)]
+    return(p1 + p2)
+
+reverse(a, p)
+```
+
+
 ## Retail Revenue Trends
 
 Given the table called 'orders' write code to show the average revenue by month by channel. The format of the result should look like the following: 
