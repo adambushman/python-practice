@@ -18,6 +18,87 @@ import statsmodels.api as sm
 ```
 
 
+## Rental Car Locations
+
+Suppose you're working for a car rental company, looking to model potential location distribution of their cars at major airports. The company operates in LA, SF, and San Jose. Customers regularly pickup a car in one of these 3 cities and drop it off in another. The company is looking to compute how likely it is that a given car will end up in a given city. You can model this as a Markov chain (where each time step corresponds to a new customer taking the car).
+
+The transition probabilities of the company's car allocation by city are as follows:
+
+```{python}
+mat = np.array([
+    [0.6, 0.1, 0.3], 
+    [0.2, 0.8, 0.3], 
+    [0.2, 0.1, 0.4]
+])
+
+names = ["SF", "LA", "San Jose"]
+```
+
+As shown, the probability a car stays in SF is 0.6, the probability it moves from SF to LA is 0.2, SF to San Jose is 0.2, etc.
+
+Using the information above, determine the probability a car will start in SF but move to LA right after.
+
+```{python}
+# Starting
+h = names.index("SF")
+v = names.index("SF")
+prob1 = mat[v][h]
+
+# Ending
+h = names.index("SF")
+v = names.index("LA")
+prob2 = mat[v][h]
+
+prob1 * prob2
+
+```
+
+The probability is 12%.
+
+
+## Pythagorean Triplet
+
+Given an array of integers, can you write a function that returns "True" if there is a triplet (a, b, c) within the array that satisfies a^2 + b^2 = c^2?
+
+```{python}
+def getCombos(x):
+    return([
+        [x[0], x[1], x[2]],
+        [x[0], x[2], x[1]],
+        [x[1], x[0], x[2]],
+        [x[1], x[2], x[0]],
+        [x[2], x[1], x[0]],
+        [x[2], x[0], x[1]]
+    ])
+
+def pyTriplet(x):
+    triplets = []
+    for i in range(0,len(x),1):
+        for j in range(i+1,len(x),1):
+            for k in range(j+1,len(x),1):
+                arrays = getCombos([
+                    x[i],x[j],x[k]
+                ])
+
+                for a in arrays:
+                    if (a[0]**2 + a[1]**2) == a[2]**2:
+                        triplets.append(a)
+    
+    if(len(triplets) == 0):
+        print("No triplets found")
+    else:
+        print(f'{len(triplets)} triplets found')
+        for t in triplets:
+            print(t)
+
+```
+
+```{python}
+pyTriplet([3, 1, 4, 6, 5])
+pyTriplet([10, 4, 6, 12, 5])
+```
+
+
 ## Reverse an array, up to a point
 
 Suppose you're given an array, a, as well as a position, p. Write a function to reverse your array, but only up to the position given in p. The rest of your array should remain untouched.
