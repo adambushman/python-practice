@@ -18,6 +18,40 @@ import statsmodels.api as sm
 ```
 
 
+## Sell, Sell, Sell
+
+Suppose we are given an array of n integers which represent the value of some stock over time. Assuming you are allowed to buy the stock exactly once and sell the stock once, what is the maximum profit you can make? Can you write an algorithm that takes in an array of values and returns the maximum profit? 
+
+For example, if you are given the following array:
+
+`[2, 7, 1, 8, 2, 8, 14, 25, 14, 0, 4, 5]`
+    
+The maximum profit you can make is 24 because you would buy the stock when its price is 1 and sell when it's 25. Note that we cannot make 25, because the stock is priced at 0 after it is priced at 25 (e.g you can't sell before you buy).
+
+```{python}
+def maxProfit(arr):
+    ordered = list(arr)
+    ordered.sort()
+
+    for s in range(len(ordered)):
+        e = len(ordered) - 1 - s
+        for i in range(len(ordered) - s):
+            start_i = arr.index(ordered[i])
+            end_i = arr.index(ordered[e])
+    
+            if start_i < end_i:
+                return ordered[e] - ordered[i]
+```
+
+```{python}
+stock_prices = [2, 7, 1, 8, 2, 8, 14, 25, 14, 0, 4, 5]
+more_prices = [55,42,28,42,29,42,24,53,36,38,22,16,48,53,16,46,50,36,31,34,55,20,47,20,55,41]
+
+maxProfit(stock_prices)
+maxProfit(more_prices)
+```
+
+
 ## Rental Car Locations
 
 Suppose you're working for a car rental company, looking to model potential location distribution of their cars at major airports. The company operates in LA, SF, and San Jose. Customers regularly pickup a car in one of these 3 cities and drop it off in another. The company is looking to compute how likely it is that a given car will end up in a given city. You can model this as a Markov chain (where each time step corresponds to a new customer taking the car).
