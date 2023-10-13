@@ -52,6 +52,26 @@ maxProfit(more_prices)
 ```
 
 
+## Employee Attrition
+
+The following dataset contains fields that describe employee attrition for a company. Can you describe which factors are the strongest indicator if an employee is going to attrit?
+
+```{python}
+url = 'https://docs.google.com/spreadsheets/d/1n-JTN2YsPQr5OG-OIDkexgOyA_5-5VlYiXaZxBTyXp4/export?gid=1129712804&format=csv'
+data_101323 = pd.read_csv(url)
+```
+
+```{python}
+matrix = data_101323.corr()
+print(matrix)
+```
+
+The strongest correlation factor to "left the company" is "satisfaction level". Unsurprisingly, one's satisfaction with their work and the company at large is inversely correlated to one leaving (why would you leave if you're happy?). However, coefficient is just -0.388...not near strong enough to be a sole indicator for future employees.
+
+Interestingly, if "left the company" is excluded from the list of correlation factors for "satisfaction level", the next strongest coefficient is "number of projects", which is -0.143. 
+
+This coefficient is very weak, however, it makes some sense that working on more projects can lead to mental as well as physical burnout, obviously affecting satisfaction
+
 ## Rental Car Locations
 
 Suppose you're working for a car rental company, looking to model potential location distribution of their cars at major airports. The company operates in LA, SF, and San Jose. Customers regularly pickup a car in one of these 3 cities and drop it off in another. The company is looking to compute how likely it is that a given car will end up in a given city. You can model this as a Markov chain (where each time step corresponds to a new customer taking the car).
