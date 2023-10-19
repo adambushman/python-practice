@@ -55,7 +55,32 @@ plt.show()
 ```
 
 
-## Alternative Array Sorting
+## Application Feedback
+
+A Product Manager asked you to give an update on how the Alpha Launch is going. You decide to aggregate (e.g. pivot) the events by each app to provide a quick summary, using the schema provided. Write the aggregation using Python (Pandas).
+
+```{python}
+data_101823 = pd.DataFrame({
+    'time': [1683469260, 1683617640, 1686722040, 1686828840, 1687541040, 1687865220, 1688224620, 1690019820, 1691225160, 1693521300, 1697117160], 
+    'user_id': [553412, 553412, 887321, 887321, 193827, 193827, 193827, 553412, 553412, 499872, 499872], 
+    'app_id': [15613, 38293, 95959, 95959, 39402, 39402, 88273, 73621, 73621, 11281, 11281], 
+    'app_name': ['Fox', 'TNT', 'Disney +', 'Disney +', 'Prime Video', 'Prime Video', 'Pluto TV', 'Netflix', 'Netflix', 'Hulu', 'Hulu'], 
+    'event': ['impressed', 'impressed', 'impressed', 'yes', 'impressed', 'yes', 'impressed', 'impressed', 'yes', 'impressed', 'yes']
+})
+```
+
+```{python}
+(data_101823
+    .pivot_table(
+        index="app_name", columns="event", aggfunc='size', fill_value=0
+    )
+    [['impressed', 'yes']]
+    .sum(axis=0)
+)
+
+```
+
+## Alternate Array Sorting
 
 Given an array of integers, print the array in alternating min/masx order. The first element should be the first maximum, second element should be the first minimum, third element should be second maximum, etc.
 
