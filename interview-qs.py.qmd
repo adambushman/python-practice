@@ -18,6 +18,42 @@ import statsmodels.api as sm
 ```
 
 
+
+## Sales by marketing channel
+
+Given the following data set, can you plot a chart that shows the percent of revenue by marketing source (assume `purchase_value` is revenue, in this case)?
+
+```{python}
+url = 'https://docs.google.com/spreadsheets/d/1s_gYPvxtgO9ufb-q2TO4n9_TCe7I-RorkbDYYegMm4c/export?gid=33674467&format=csv'
+data_101923 = pd.read_csv(url)
+```
+
+```{python}
+rev_by_source = (data_101923
+    .groupby(['source'])
+    ['purchase_value']
+    .agg(['sum'])
+    .reset_index()
+    .assign(
+        total = lambda dfx: sum(dfx['sum']), 
+        perc_total = lambda dfy: dfy['sum'] / dfy['total']
+    )
+)
+```
+
+```{python}
+ax = (rev_by_source
+    .plot(
+        x = 'source', y = 'perc_total', kind = 'bar', 
+        legend = False, color = '#92374D', xlabel = '',
+        title = '% of Revenue by Marketing Channel'
+    )
+)
+
+ax.set_xticklabels(ax.get_xticklabels(), rotation=0)
+plt.show()
+```
+
 ## Sell, Sell, Sell
 
 Suppose we are given an array of n integers which represent the value of some stock over time. Assuming you are allowed to buy the stock exactly once and sell the stock once, what is the maximum profit you can make? Can you write an algorithm that takes in an array of values and returns the maximum profit? 
