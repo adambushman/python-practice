@@ -135,6 +135,30 @@ maxProfit(more_prices)
 ```
 
 
+## Empty Slot in List of Integers
+
+You have a list of integers that range from values 1 to n. Each value in the list is unique, however one random slot in the list is empty, making the size of the input array n-1. Can you write a function to find the missing integer?
+
+```{python}
+def findEmpty(arr):
+    arranged = list(arr)
+    arranged.sort()
+    
+    maxx = max(arr)
+    minn = min(arr)
+
+    check = range(minn, maxx)
+
+    for i in range(len(arr)):
+        if check[i] != arranged[i]:
+            return check[i]
+```
+
+```{python}
+my_array = [1, 2, 4, 6, 3, 7, 8]
+print(findEmpty(my_array))
+```
+
 ## Employee Attrition
 
 The following dataset contains fields that describe employee attrition for a company. Can you describe which factors are the strongest indicator if an employee is going to attrit?
