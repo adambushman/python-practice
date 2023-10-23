@@ -17,6 +17,26 @@ import statsmodels.api as sm
 
 ```
 
+## Calculating a moving average
+
+You are given a list of numbers J and a single number p. Write a function to return the minimum and maximum averages of the sequences of p numbers in the list J.
+
+```{python}
+def movingAvg(J, p):
+    avgs = []
+    for j in range(p, len(J)):
+        i = j - p
+        avgs.append(np.array(J[i:j]).mean())
+
+    return min(avgs), max(avgs)
+```
+
+```{python}
+J = [4, 4, 4, 9, 10, 11, 12]
+p = 3
+
+print(movingAvg(J, p))
+```
 
 
 ## Sales by marketing channel
