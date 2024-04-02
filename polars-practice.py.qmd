@@ -1,0 +1,97 @@
+---
+title: "Polars Exploration"
+description: "Gaining practice with the {polars} library in Python."
+---
+
+```{python}
+
+# Import polars
+import polars as pl
+
+
+
+```
+
+```{python}
+
+# Creating a dataframe
+
+teams = pl.DataFrame({
+    "name": ["Utah Jazz", "LA Dodgers", "Cincinnati Bengals", "Manchester United FC", "Arizona Coyotes"], 
+    "sport": ["Basketball", "Baseball", "Football", "Soccer", "Hockey"]
+})
+
+teams
+
+```
+
+```{python}
+
+# Reading data
+box_df = pl.read_csv('nba-player-box-scores-24.csv')
+
+box_df.columns
+
+```
+
+## Practicing filters
+
+```{python}
+
+kg_df = box_df.filter(
+    pl.col('athlete_display_name') == 'Keyonte George'
+)
+
+# Box scores for Keyonte George
+kg_df.head()
+
+```
+
+```{python}
+
+# Box scores of 50+ points
+fifty_df = box_df.filter(pl.col("points") >= 50)
+
+fifty_df
+
+```
+
+
+## Summarizing
+
+```{python}
+
+# Summarizing the most 50+ point games
+fifty_sum_df = (
+    fifty_df
+        .groupby(
+            ["athlete_id", "athlete_display_name"]
+        )
+        .agg(
+            pl.count().alias('num_games')
+        )
+)
+
+fifty_sum_df
+
+```
+
+
+## Adding new columns 
+
+```{python}
+
+# Adding true shooting percentage and sorting
+best_fifty_df = (
+    fifty_df
+        .with_columns(
+            (pl.col("points") / ((pl.col("field_goals_attempted") + (pl.col("free_throws_attempted") * 0.44)) * 2)).alias("ts_perc")
+        )
+       [["opponent_team_display_name", "athlete_display_name", "points", "ts_perc"]]
+        .sort("ts_perc", descending=True)
+
+)
+
+best_fifty_df
+
+```
