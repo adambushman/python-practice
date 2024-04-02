@@ -13,9 +13,69 @@ import random as rand
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
+import math
 # from sklearn.linear_model import LinearRegression
 
 ```
+
+
+## Temperature conversion
+
+Write a Python function to convert temperatures from fahrenheit to celsius. More specifically, your function should be able to read in a list of unspecified length and print out the celsius temperature for each item. 
+
+```{python}
+
+def calcTemp(lst):
+    def convert(x):
+        return round((x - 32) * 5 / 9,1)
+
+    return list(map(convert, lst))
+
+calcTemp([89, 79, 40])
+
+```
+
+
+## Animal classification
+
+Given the following dataframe, write code to list the size of the each animal with the highest weight.
+
+```{python}
+
+data = pd.DataFrame({
+    'adult': [False,True,False,False,True,True,True], 
+    'animal': ['cat','dog','cat','fish','dog','cat','cat'], 
+    'size': ['M','M','M','S','L','M','M'], 
+    'weight': [8,10,11,1,20,12,12]
+})
+
+(data
+    .groupby('animal')
+    [['weight']]
+    .max()
+    .reset_index()
+    .sort_values('weight', ascending=False)
+)
+
+```
+
+
+## Identity Matrix
+
+Can you build a function that prints an identity matrix, given the identity matrix size?
+
+```{python}
+
+def print_identity_matrix(n):
+    for i in list(range(0,n)):
+        inner = list(map(lambda x: 0, list(range(0,n))))
+        inner[i] = 1
+        print(inner)
+
+print_identity_matrix(3)
+
+```
+
 
 ## Calculating a moving average
 
